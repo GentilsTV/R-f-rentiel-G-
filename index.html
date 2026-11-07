@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Référentiel-G</title>
+<style>
+:root{
+  --vert:#0b7a3b;--vert-fonce:#075c2c;--orange:#ff7900;--orange-fonce:#c25a00;
+  --fond:#f4f6f2;--encre:#16281d;--gris:#66776c;--blanc:#fff
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,sans-serif;background:var(--fond);color:var(--encre)}
+.hide{display:none!important}
+header{background:var(--vert);color:#fff;padding:12px 14px;border-bottom:5px solid var(--orange);display:flex;align-items:center;gap:10px}
+.logo{width:38px;height:38px;border-radius:9px;background:var(--orange);color:#fff;font-weight:800;font-size:22px;display:flex;align-items:center;justify-content:center;flex:none}
+header h1{margin:0;font-size:21px;font-weight:800;line-height:1.1}
+header small{display:block;color:#ffd9b0;font-weight:600;font-size:13px}
+#app{padding-bottom:70px}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--blanc);border-top:1px solid #d5ded8;z-index:5}
+nav button{flex:1;border:0;background:none;padding:13px 4px;font-size:14px;color:var(--gris);font-weight:700}
+nav button.on{color:var(--vert);box-shadow:inset 0 3px var(--orange)}
+section{display:none;padding:12px}
+section.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.card{background:var(--blanc);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;border-top:3px solid var(--vert)}
+.card img,.ph{width:100%;height:110px;object-fit:cover;background:#d6e0d8}
+.ph{display:flex;align-items:center;justify-content:center;font-size:34px}
+.info{padding:8px;flex:1}
+.info b{display:block;font-size:14px}
+.compo{font-size:12px;color:var(--gris);margin:4px 0}
+.jour{font-size:12px;font-weight:700;color:var(--vert);background:#e3f3e9;border-radius:6px;padding:4px 6px;margin:4px 0}
+.prix{color:var(--orange-fonce);font-weight:800}
+.btns{display:flex;flex-direction:column;gap:1px}
+button.b{border:0;padding:11px;font-size:13px;font-weight:700;background:var(--vert);color:#fff}
+button.b.alt{background:var(--orange);color:#1a1a1a}
+button.full{width:100%;border-radius:8px;font-size:15px;padding:13px}
+input{width:100%;padding:12px;border:1px solid #c5d1c9;border-radius:8px;font-size:16px;margin:4px 0}
+input:focus{outline:2px solid var(--orange);border-color:var(--orange)}
+.box{background:var(--blanc);border-radius:10px;padding:14px;margin-bottom:12px}
+.note{font-size:13px;color:var(--gris);margin:4px 0 6px}
+.solde{background:var(--vert);color:#fff;border-radius:10px;padding:18px;margin-bottom:12px;border-left:8px solid var(--orange)}
+.solde small{opacity:.85}
+.solde div{font-size:32px;font-weight:800;margin-top:2px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}
+.chips button{border:1px solid var(--orange);background:none;color:var(--orange-fonce);border-radius:20px;padding:7px 13px;font-weight:700}
+h2{font-size:16px;margin:14px 0 8px;color:var(--vert-fonce)}
+.bar{height:9px;background:#dfe8e1;border-radius:5px;overflow:hidden;margin:6px 0}
+.bar i{display:block;height:100%;background:var(--orange)}
+.h{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #e3e9e5;font-size:14px}
+.h small{color:var(--gris);display:block}
+.st{font-size:12px;font-weight:700}
+.st.Valide{color:var(--vert)}.st.Refuse{color:#b91c1c}.st.attente{color:var(--orange-fonce)}
+dialog{border:0;border-radius:12px;width:90%;max-width:380px;padding:16px;border-top:5px solid var(--orange)}
+dialog::backdrop{background:#0008}
+.err{color:#b91c1c;font-size:14px;min-height:20px;margin:4px 0}
+.top{display:flex;gap:8px}.top button{flex:1}
+/* Portail */
+#portail{min-height:100vh;background:var(--vert);display:flex;flex-direction:column}
+.hero{padding:34px 20px 22px;color:#fff;text-align:center}
+.hero .logo{width:62px;height:62px;font-size:36px;margin:0 auto 12px;border-radius:16px}
+.hero h1{margin:0;font-size:28px}
+.hero p{margin:6px 0 0;color:#ffd9b0;font-size:18px;font-weight:700}
+.porte{background:var(--fond);border-radius:22px 22px 0 0;border-top:6px solid var(--orange);padding:18px 16px 28px;flex:1}
+.tabs{display:flex;background:#e3eae5;border-radius:10px;padding:3px;margin-bottom:12px}
+.tabs button{flex:1;border:0;background:none;padding:11px;border-radius:8px;font-weight:700;font-size:15px;color:var(--gris)}
+.tabs button.on{background:var(--blanc);color:var(--vert);box-shadow:0 1px 3px #0003}
+</style>
+</head>
+<body>
+
+<!-- PORTAIL DE CONNEXION -->
+<div id="portail">
+  <div class="hero">
+    <div class="logo">G</div>
+    <h1>Référentiel-G</h1>
+    <p>Payez petit à petit</p>
+  </div>
+  <div class="porte">
+    <div class="tabs">
+      <button id="t-connexion" class="on" onclick="mode('connexion')">Se connecter</button>
+      <button id="t-inscription" onclick="mode('inscription')">S'inscrire</button>
+    </div>
+    <input id="p-nom" class="hide" placeholder="Votre nom complet">
+    <input id="p-tel" type="tel" inputmode="numeric" placeholder="Numéro de téléphone (ex. 0105468434)">
+    <input id="p-pin" type="password" inputmode="numeric" maxlength="4" placeholder="Code PIN à 4 chiffres">
+    <input id="p-pin2" type="password" inputmode="numeric" maxlength="4" class="hide" placeholder="Confirmez le code PIN">
+    <div class="err" id="p-err"></div>
+    <button id="p-ok" class="b full" onclick="valider()">Se connecter</button>
+  </div>
+</div>
+
+<!-- APPLICATION -->
+<div id="app" class="hide">
+  <header>
+    <div class="logo">G</div>
+    <div><h1>Référentiel-G</h1><small>Payez petit à petit</small></div>
+  </header>
+
+  <section id="kits" class="on"><div class="grid" id="g-kits">Chargement...</div></section>
+  <section id="cat"><div class="grid" id="g-cat"></div></section>
+
+  <section id="epargne">
+    <div class="solde"><small id="bonjour">Solde disponible</small><div id="solde">0</div>
+      <small id="att" style="display:block;margin-top:6px;color:#ffd9b0;font-weight:700"></small>
+      <small id="maj" style="display:block;margin-top:6px;color:#ffd9b0;font-weight:700"></small></div>
+
+    <div class="box">
+      <b>Mon montant d'épargne</b>
+      <p class="note">Choisissez la somme que vous épargnez. Chaque dépôt sera d'au moins ce montant.</p>
+      <input id="ob" type="number" inputmode="numeric" placeholder="Ex. 1000">
+      <button class="b alt full" onclick="objectif()">Enregistrer ce montant</button>
+    </div>
+
+    <div class="box">
+      <b>Déposer sur mon épargne</b>
+      <p class="note" id="minep"></p>
+      <div class="chips" id="chips"></div>
+      <input id="mt" type="number" inputmode="numeric" placeholder="Montant du dépôt">
+      <button class="b full" onclick="depot()">Déposer</button>
+    </div>
+
+    <div class="box">
+      <b>Demander un retrait</b>
+      <input id="rt" type="number" inputmode="numeric" placeholder="Montant à retirer">
+      <button class="b alt full" onclick="retrait()">Demander par WhatsApp</button>
+    </div>
+
+    <h2>Mes achats par tranches</h2>
+    <div id="plans"></div>
+    <h2>Historique</h2>
+    <div class="box" id="histo"></div>
+    <div class="top">
+      <button class="b" style="border-radius:8px" onclick="rafraichir()">Actualiser</button>
+      <button class="b alt" style="border-radius:8px" onclick="quitter()">Se déconnecter</button>
+    </div>
+  </section>
+
+  <nav>
+    <button class="on" data-t="kits">Cartes</button>
+    <button data-t="cat">Catalogue</button>
+    <button data-t="epargne">Épargne</button>
+  </nav>
+
+  <dialog id="dlg">
+    <b id="dt"></b>
+    <p id="dp" style="color:var(--gris);margin:6px 0"></p>
+    <input id="dm" type="number" inputmode="numeric" placeholder="Montant du versement">
+    <div class="err" id="derr"></div>
+    <button class="b full" onclick="versement()">Continuer vers le paiement</button>
+    <button class="b alt full" style="margin-top:6px" onclick="dlg.close()">Annuler</button>
+  </dialog>
+
+  <dialog id="dpay">
+    <b>Choisissez votre moyen de paiement</b>
+    <p id="dpm" style="color:var(--gris);margin:6px 0 12px"></p>
+    <button class="b full" onclick="ouvrir('wave')">Payer avec Wave</button>
+    <button class="b alt full" style="margin-top:6px" onclick="ouvrir('orange')">Payer avec Orange Money</button>
+    <button class="full" style="margin-top:6px;border:0;background:none;color:var(--gris);font-weight:700" onclick="$('dpay').close()">Plus tard</button>
+    <p style="font-size:12px;color:var(--gris);margin:8px 0 0">Après le paiement, votre opération est validée et ajoutée à votre compte.</p>
+  </dialog>
+</div>
+
+<script>
+/* ====== PARAMÈTRES ====== */
+const API = "https://script.google.com/macros/s/AKfycbxQJJVNoLRFdnyoPacGslyWTfe6Hu3YLceJ98-oViNXb_wVWRccqDRuVYxOlbvNvbKi/exec";
+const WHATSAPP = "2250105468434";
+const LIENS = {
+  wave: "https://pay.wave.com/m/M_ci_Ax95-g5_jraK/c/ci/?amount={montant}",
+  orange: "https://multi.app.orange-money.com/app/v1/transaction/merchantPayment/1706329?amount%5Bcurrency%5D=XOF&amount%5Bvalue%5D={montant}"
+};
+const DEVISE = "FCFA";
+const MIN = 500;
+
+/* Photos de secours : utilisées seulement si la colonne Photo du Sheet n'a pas de photo.
+   La 1re image va au 1er produit de ce type, la 2e au 2e, etc. */
+const PHOTO_BASE = "https://lh3.googleusercontent.com/d/";
+const PHOTOS_KITS = [
+  "1GsK8C5OTg17p3U_-2EFlvXrkFVRGLmVr",
+  "1x9UPVCx0j0ze7omePeonGcXj5KndsxXV",
+  "1QwH9-hfVU6YEuYvErqYV2tARC6DuYMbq",
+  "1HnH3w8bVa5_SyoqU90nUvm0D8VVZNrsw",
+  "1srYOGBnMJD8JOJH9R4L2koen8q6muoWI",
+  "1i7tVRvq3WBmiSrkyNxOZJlxuuvT1NGCh"
+];
+const PHOTOS_CAT = [
+  "1C0NI3hXyuBXi6Tvb_zHZgH0lHBK8TxJP",
+  "1DQKnqI1HBtXDvBnDAG005itu2x-bEvIZ",
+  "1Y4b11IsB4AWyovFJqwJj3-y78eTz9mRf",
+  "1IN6SqgaEB7qbIZOBlxwlWjUSCttv7PlW",
+  "15zj6wc-R34MyDAupZ0TAjPMvLXWLe1UI",
+  "1IitaUPJs2SQn8MJgSCljByDeOUZPW353",
+  "16RPFaIrosCt4BMST9xA95MDXTfo2RPDo",
+  "1OfBAx7KFeQtRBhiDqhrOS24Zn8Sp8hNL",
+  "1O305fG3Fw9CZWdF2rBI08mgc57RJkWo-",
+  "18F7asKJyjjdEO2fPkT6RSEvmk1gRgFUE",
+  "10r7bXF-ru5wRFm0mKoI9mjao7BcmF9BX",
+  "1CGZbPGqGQJXklAWum2PIZxde6mT4OU6r",
+  "13Iybb9L4ui5xYeE_xeFc7OzwdWFk6zd7",
+  "1Q_RV_ONajgCOvsIuRuhS6sebih1UKd-i",
+  "1s725pLhudKg8_f-TyKLcY-oMdBtrBsyr",
+  "1eV_padsBpc_EZ4JrS4-7w6YwD_iRbuEs",
+  "1mMPeNwuMVfOOQ0itOd550_Tu36EnnAvx",
+  "1B4Lbmj8OaTTxA5_RAnE7e_qn67vrMpa9"
+];
+/* ======================== */
+
+let produits = [], session = null, cible = null, modeAuth = "connexion", attente = null, minEp = MIN;
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt = n => Number(n).toLocaleString("fr-FR") + " " + DEVISE;
+const norm = t => { t = String(t).replace(/\D/g, ""); return t.length === 10 ? "225" + t : t; };
+const minP = p => Number(p.Somme_jour) > 0 ? Number(p.Somme_jour) : MIN;
+
+async function appel(corps) {
+  const r = await fetch(API, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(corps) });
+  return r.json();
+}
+
+/* ---- Portail ---- */
+function mode(m) {
+  modeAuth = m;
+  $("t-connexion").classList.toggle("on", m === "connexion");
+  $("t-inscription").classList.toggle("on", m === "inscription");
+  $("p-nom").classList.toggle("hide", m !== "inscription");
+  $("p-pin2").classList.toggle("hide", m !== "inscription");
+  $("p-ok").textContent = m === "inscription" ? "Créer mon compte" : "Se connecter";
+  $("p-err").textContent = "";
+}
+async function valider() {
+  const s = { tel: norm($("p-tel").value), pin: $("p-pin").value, nom: $("p-nom").value.trim() };
+  if (modeAuth === "inscription" && s.pin !== $("p-pin2").value)
+    return $("p-err").textContent = "Les deux codes PIN sont différents.";
+  if (s.tel.length < 8) return $("p-err").textContent = "Numéro de téléphone invalide.";
+  if (!/^\d{4}$/.test(s.pin)) return $("p-err").textContent = "Le code PIN doit avoir 4 chiffres.";
+  $("p-err").textContent = "Veuillez patienter...";
+  try {
+    const r = await appel({ action: modeAuth, ...s });
+    if (!r.ok) return $("p-err").textContent = r.msg;
+    entrer(s, r);
+  } catch (e) {
+    $("p-err").textContent = "Connexion impossible. Vérifiez internet et le déploiement Apps Script.";
+  }
+}
+function entrer(s, r) {
+  session = { tel: s.tel, pin: s.pin };
+  try { sessionStorage.setItem("rg", JSON.stringify(session)); } catch {}
+  $("portail").classList.add("hide"); $("app").classList.remove("hide");
+  $("bonjour").textContent = (r.nom ? "Bonjour " + r.nom + " • " : "") + "Solde disponible";
+  afficher(r); chargerProduits();
+}
+function quitter() {
+  session = null; produits = [];
+  try { sessionStorage.removeItem("rg"); } catch {}
+  $("p-pin").value = ""; $("p-pin2").value = "";
+  $("app").classList.add("hide"); $("portail").classList.remove("hide");
+}
+(async () => {
+  try {
+    const s = JSON.parse(sessionStorage.getItem("rg") || "null");
+    if (!s) return;
+    const r = await appel({ action: "dashboard", ...s });
+    if (r.ok) entrer(s, r);
+  } catch {}
+})();
+
+/* ---- Navigation ---- */
+document.querySelectorAll("nav button").forEach(b => b.onclick = () => {
+  document.querySelectorAll("nav button,section").forEach(e => e.classList.remove("on"));
+  b.classList.add("on"); $(b.dataset.t).classList.add("on");
+  window.scrollTo(0, 0);
+});
+const aller = t => document.querySelector(`nav [data-t="${t}"]`).click();
+
+/* ---- Produits ---- */
+async function chargerProduits() {
+  try {
+    const r = await appel({ action: "produits", ...session });
+    if (!r.ok) throw new Error(r.msg);
+    produits = r.produits;
+    const n = { Kit: 0, Catalogue: 0 };
+    produits.forEach(p => { p._i = n[p.Type] !== undefined ? n[p.Type]++ : -1; });
+    vitrine();
+  } catch (e) {
+    $("g-kits").textContent = "Erreur de chargement : " + e.message;
+  }
+}
+function driveId(u) {
+  const m = String(u).match(/\/d\/([\w-]+)/) || String(u).match(/[?&]id=([\w-]+)/);
+  return u.includes("drive.google.com") && m ? m[1] : "";
+}
+function photoDe(p) {
+  const u = String(p.Photo || "").trim();
+  if (/^https?:\/\//i.test(u)) return u;
+  const liste = p.Type === "Kit" ? PHOTOS_KITS : PHOTOS_CAT;
+  return p._i >= 0 && liste[p._i] ? PHOTO_BASE + liste[p._i] : "";
+}
+function imgHtml(p) {
+  const u = photoDe(p);
+  if (!u) return `<div class="ph">🛒</div>`;
+  const id = driveId(u);
+  const src = id ? "https://drive.google.com/thumbnail?id=" + id + "&sz=w600" : u;
+  return `<img src="${esc(src)}" data-id="${esc(id)}" alt="" loading="lazy" onerror="imgErr(this)">`;
+}
+function imgErr(el) {
+  if (el.dataset.id && !el.dataset.essai) {
+    el.dataset.essai = "1";
+    el.src = "https://lh3.googleusercontent.com/d/" + el.dataset.id + "=w600";
+  } else {
+    el.outerHTML = '<div class="ph">🛒</div>';
+  }
+}
+function carte(p) {
+  const jour = Number(p.Somme_jour) > 0
+    ? `<div class="jour">${fmt(p.Somme_jour)} / jour${Number(p.Duree_jours) > 0 ? " • " + p.Duree_jours + " jours" : ""}</div>` : "";
+  return `<div class="card">${imgHtml(p)}
+    <div class="info"><b>${esc(p.Nom)}</b>
+    ${p.Composition ? `<div class="compo">${esc(p.Composition)}</div>` : ""}
+    ${jour}
+    <span class="prix">${fmt(p.Prix)}</span></div>
+    <div class="btns">
+      <button class="b" onclick="commander('${esc(p.ID)}')">Commander</button>
+      <button class="b alt" onclick="tranches('${esc(p.ID)}')">Payer par tranches</button>
+    </div></div>`;
+}
+function vitrine() {
+  $("g-kits").innerHTML = produits.filter(p => p.Type === "Kit").map(carte).join("") || "Aucun kit pour le moment.";
+  $("g-cat").innerHTML = produits.filter(p => p.Type === "Catalogue").map(carte).join("") || "Aucun article pour le moment.";
+}
+function commander(id) {
+  const p = produits.find(x => x.ID == id);
+  const msg = `Bonjour, je souhaite commander : ${p.Nom} (${fmt(p.Prix)}). Téléphone : ${session.tel}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`);
+}
+
+/* ---- Épargne ---- */
+function afficher(r) {
+  $("solde").textContent = fmt(r.solde);
+  $("att").textContent = r.enAttente > 0 ? fmt(r.enAttente) + " de dépôt en attente de validation" : "";
+  $("maj").textContent = r.version ? "" : "⚠️ Serveur pas à jour : redéployez Code.gs.";
+  minEp = r.minEpargne || MIN;
+  $("ob").placeholder = "Actuel : " + fmt(minEp);
+  $("minep").textContent = "Minimum par dépôt : " + fmt(minEp);
+  $("mt").placeholder = "Montant du dépôt (min. " + minEp + ")";
+  $("chips").innerHTML = [1, 2, 5, 10].map(k => minEp * k)
+    .map(v => `<button onclick="$('mt').value=${v}">${v.toLocaleString("fr-FR")}</button>`).join("");
+  $("plans").innerHTML = r.plans.map(p => {
+    const pct = Math.min(100, Math.round(p.paye / p.prix * 100));
+    const fin = p.fin ? `<br><small>Fin de cotisation : ${esc(p.fin)} (${p.reste > 0 ? p.reste + " jour(s) restant(s)" : "échéance atteinte"})</small>` : "";
+    return `<div class="box"><b>${esc(p.nom)}</b><div class="bar"><i style="width:${pct}%"></i></div>
+      ${fmt(p.paye)} sur ${fmt(p.prix)} (${pct} %)${fin}${p.attente ? `<br><small>${fmt(p.attente)} en attente de validation</small>` : ""}</div>`;
+  }).join("") || `<div class="box">Aucun achat en cours. Choisissez « Payer par tranches » sur un article.</div>`;
+  const lib = { Depot: "Dépôt", Retrait: "Retrait", Versement: "Versement" };
+  $("histo").innerHTML = r.historique.map(t => `<div class="h">
+    <div>${lib[t.type] || esc(t.type)}${t.produit ? " : " + esc(t.produit) : ""}<small>${esc(t.date)}</small></div>
+    <div style="text-align:right"><b>${t.type === "Retrait" ? "−" : "+"}${fmt(t.montant)}</b>
+    <div class="st ${t.statut === "En attente" ? "attente" : esc(t.statut)}">${t.statut === "Valide" ? "Validé" : t.statut === "Refuse" ? "Refusé" : esc(t.statut)}</div></div></div>`).join("") || "Aucun mouvement.";
+}
+async function rafraichir() {
+  const r = await appel({ action: "dashboard", ...session });
+  if (r.ok) afficher(r); else alert(r.msg);
+}
+async function objectif() {
+  const m = Number($("ob").value);
+  if (!(m >= MIN)) return alert("Montant minimum : " + MIN + " " + DEVISE);
+  const r = await appel({ action: "objectif", ...session, montant: m });
+  if (!r.ok) return alert(r.msg);
+  $("ob").value = ""; afficher(r);
+  alert("Votre montant d'épargne est enregistré : " + fmt(m));
+}
+
+/* ---- Paiement (Wave / Orange Money) ---- */
+function payer(montant, ref) {
+  attente = { montant, ref };
+  $("dpm").textContent = "Montant : " + fmt(montant) + " • Réf : " + ref;
+  $("dpay").showModal();
+}
+function ouvrir(moyen) {
+  window.open(LIENS[moyen].replace("{montant}", attente.montant).replace("{ref}", attente.ref));
+  $("dpay").close();
+}
+async function depot() {
+  const m = Number($("mt").value);
+  if (!(m >= minEp)) return alert("Montant minimum : " + fmt(minEp));
+  const r = await appel({ action: "depot", ...session, montant: m });
+  if (!r.ok) return alert(r.msg);
+  afficher(r); payer(m, r.ref);
+}
+async function retrait() {
+  const m = Number($("rt").value);
+  const r = await appel({ action: "retrait", ...session, montant: m });
+  if (!r.ok) return alert(r.msg);
+  afficher(r);
+  const msg = `Bonjour, je demande un retrait de ${fmt(m)}. Téléphone : ${session.tel}. Réf : ${r.ref}`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`);
+}
+
+/* ---- Paiement par tranches ---- */
+function tranches(id) {
+  cible = produits.find(x => x.ID == id);
+  const min = minP(cible), j = Number(cible.Duree_jours);
+  $("dt").textContent = cible.Nom;
+  $("dp").textContent = "Prix total : " + fmt(cible.Prix) + " • Minimum par versement : " + fmt(min)
+    + (j > 0 ? " • Durée : " + j + " jours" : "");
+  $("dm").placeholder = "Montant du versement (min. " + min + ")";
+  $("dm").value = min; $("derr").textContent = ""; $("dlg").showModal();
+}
+async function versement() {
+  const m = Number($("dm").value), min = minP(cible);
+  if (!(m >= min)) return $("derr").textContent = "Montant minimum : " + fmt(min);
+  const r = await appel({ action: "versement", ...session, produit: cible.ID, montant: m });
+  if (!r.ok) return $("derr").textContent = r.msg;
+  $("dlg").close(); afficher(r); aller("epargne"); payer(m, r.ref);
+}
+</script>
+</body>
+</html>

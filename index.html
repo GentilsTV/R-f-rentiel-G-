@@ -65,6 +65,21 @@ dialog::backdrop{background:#0008}
 .tabs{display:flex;background:#e3eae5;border-radius:10px;padding:3px;margin-bottom:12px}
 .tabs button{flex:1;border:0;background:none;padding:11px;border-radius:8px;font-weight:700;font-size:15px;color:var(--gris)}
 .tabs button.on{background:var(--blanc);color:var(--vert);box-shadow:0 1px 3px #0003}
+/* Styles Section Infos (inspirés de l'image) */
+.info-card { background: var(--vert); border-radius: 12px; padding: 16px; color: #fff; margin-bottom: 16px; border-left: 6px solid var(--orange); }
+.info-card h3 { margin: 0 0 4px 0; font-size: 18px; }
+.info-card p { margin: 0 0 12px 0; font-size: 13px; color: #ffd9b0; }
+.info-card .tel-num { font-size: 24px; font-weight: 800; margin-bottom: 14px; letter-spacing: 1px; }
+.info-card-btns { display: flex; gap: 8px; }
+.info-card-btns button { flex: 1; border: 0; padding: 11px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; }
+.btn-wa-info { background: var(--orange); color: #fff; }
+.btn-call-info { background: var(--blanc); color: var(--encre); }
+.condition-btn { width: 100%; background: var(--blanc); border: 1px solid #d5ded8; border-radius: 10px; padding: 14px; text-align: left; font-size: 14px; font-weight: 700; color: var(--encre); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); cursor: pointer; }
+.condition-btn span { color: var(--orange); font-size: 16px; }
+.modal-conditions { max-width: 90%; width: 420px; max-height: 80vh; overflow-y: auto; }
+.modal-conditions h3 { color: var(--vert-fonce); margin-top: 0; font-size: 16px; }
+.modal-conditions p, .modal-conditions li { font-size: 13px; color: var(--gris); line-height: 1.4; }
+.modal-conditions ul { padding-left: 18px; }
 </style>
 </head>
 <body>
@@ -136,11 +151,68 @@ dialog::backdrop{background:#0008}
     </div>
   </section>
 
+  <!-- SECTION INFOS (AJOUTÉE CONFORMÉMENT À L'IMAGE) -->
+  <section id="infos">
+    <div class="info-card">
+      <h3>Service client</h3>
+      <p>Une question ? Nous sommes à votre écoute.</p>
+      <div class="tel-num">01 05 46 84 34</div>
+      <div class="info-card-btns">
+        <button class="btn-wa-info" onclick="window.open('https://wa.me/2250105468434')">WhatsApp</button>
+        <button class="btn-call-info" onclick="window.location.href='tel:0105468434'">Appeler</button>
+      </div>
+    </div>
+
+    <h2 style="margin-top:16px;">Conditions générales</h2>
+    
+    <button class="condition-btn" onclick="$('modal-epargne').showModal()">
+      <span>▶</span> Principes de collecte et de gestion de l'épargne
+    </button>
+    
+    <button class="condition-btn" onclick="$('modal-catalogue').showModal()">
+      <span>▶</span> Principes régissant les carnets « Marchandises et Catalogue »
+    </button>
+  </section>
+
   <nav>
     <button class="on" data-t="kits">Cartes</button>
     <button data-t="cat">Catalogue</button>
     <button data-t="epargne">Épargne</button>
+    <button data-t="infos">Infos</button>
   </nav>
+
+  <!-- MODALES DES CONDITIONS GÉNÉRALES -->
+  <dialog id="modal-epargne" class="modal-conditions">
+    <h3>Principes de collecte et de gestion de l'épargne</h3>
+    <p><b>NOS PRINCIPES DE COLLECTE ET DE GESTION DE L'ÉPARGNE</b></p>
+    <ul>
+      <li><b>Modalités de retrait :</b> Toutes les opérations de retrait s'effectuent exclusivement au bureau, sur recommandation expresse du gestionnaire de compte désigné.</li>
+      <li><b>Conditions d'éligibilité au retrait standard :</b> Le retrait des fonds est possible à l'issue d'une période d'épargne de dix mois ou après dix mois d'ancienneté à compter de la date d'inscription, moyennant un prélèvement de 1/31e.</li>
+      <li><b>Retrait anticipé et conditions de prélèvement :</b> En cas de retrait intervenant avant l'expiration du délai de dix mois, une retenue de 10 % est appliquée sur le montant concerné. Cette minoration s'articule selon le barème indicatif suivant :
+        <ul>
+          <li><b>Base 500 :</b> 1 550 F prélevés lors du retrait, soit un montant net de 13 950 F reversé au client.</li>
+          <li><b>Base 1 000 :</b> 3 100 F prélevés lors du retrait, soit un montant net de 27 900 F reversé au client.</li>
+          <li><b>Base 2 000 :</b> 6 200 F prélevés lors du retrait, soit un montant net de 55 800 F reversé au client.</li>
+          <li><b>Base 3 000 :</b> 9 300 F prélevés lors du retrait, soit un montant net de 83 700 F reversé au client.</li>
+        </ul>
+      </li>
+    </ul>
+    <p><b>Note d'information :</b> Les frais d'inscription s'élèvent à 600 F.</p>
+    <button class="b alt full" style="margin-top:12px" onclick="$('modal-epargne').close()">Fermer</button>
+  </dialog>
+
+  <dialog id="modal-catalogue" class="modal-conditions">
+    <h3>Principes régissant les carnets « Marchandises et Catalogue »</h3>
+    <p><b>Les Principes régissant nos carnets « Marchandises et Catalogue »</b></p>
+    <ul>
+      <li><b>Non-remboursement et engagement :</b> Tout désistement intervenant après l'inscription ou le versement de l'épargne n'emporte aucun remboursement. Le client demeure tenu de finaliser son engagement, nonobstant le risque inhérent de perte de son épargne.</li>
+      <li><b>Vérification et responsabilité partagée :</b> Lors de chaque versement, le client est tenu de contrôler les informations inscrites sur son carnet ainsi que sur le registre du commercial. À défaut, les deux parties seront tenues solidairement responsables en cas de non-conformité.</li>
+      <li><b>Modalités de calcul de l'épargne :</b> L'épargne constituée ne saurait faire l'objet d'un nouveau calcul pour l'obtention de marchandises en fonction de la somme initialement versée.</li>
+      <li><b>Frais de modification :</b> Toute modification de commande ou tout changement de choix sera facturé au tarif forfaitaire de 500 FCFA.</li>
+      <li><b>Validité du carnet :</b> Le présent carnet demeure valable pour une durée d'un an à compter de la date d'inscription. Passé ce délai, aucune réclamation ne sera recevable.</li>
+    </ul>
+    <button class="b alt full" style="margin-top:12px" onclick="$('modal-catalogue').close()">Fermer</button>
+  </dialog>
 
   <dialog id="dlg">
     <b id="dt"></b>
@@ -172,8 +244,7 @@ const LIENS = {
 const DEVISE = "FCFA";
 const MIN = 500;
 
-/* Photos de secours : utilisées seulement si la colonne Photo du Sheet n'a pas de photo.
-   La 1re image va au 1er produit de ce type, la 2e au 2e, etc. */
+/* Photos de secours : utilisées seulement si la colonne Photo du Sheet n'a pas de photo. */
 const PHOTO_BASE = "https://lh3.googleusercontent.com/d/";
 const PHOTOS_KITS = [
   "1GsK8C5OTg17p3U_-2EFlvXrkFVRGLmVr",

@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Référentiel-G</title>
+
+<!-- LIAISON MANIFEST ET THEME POUR PWA -->
+<link rel="manifest" href="./manifest.json">
+<meta name="theme-color" content="#0b7a3b">
+
 <style>
 :root{
   --vert:#0b7a3b;--vert-fonce:#075c2c;--orange:#ff7900;--orange-fonce:#c25a00;
@@ -65,7 +70,7 @@ dialog::backdrop{background:#0008}
 .tabs{display:flex;background:#e3eae5;border-radius:10px;padding:3px;margin-bottom:12px}
 .tabs button{flex:1;border:0;background:none;padding:11px;border-radius:8px;font-weight:700;font-size:15px;color:var(--gris)}
 .tabs button.on{background:var(--blanc);color:var(--vert);box-shadow:0 1px 3px #0003}
-/* Styles Section Infos (inspirés de l'image) */
+/* Styles Section Infos */
 .info-card { background: var(--vert); border-radius: 12px; padding: 16px; color: #fff; margin-bottom: 16px; border-left: 6px solid var(--orange); }
 .info-card h3 { margin: 0 0 4px 0; font-size: 18px; }
 .info-card p { margin: 0 0 12px 0; font-size: 13px; color: #ffd9b0; }
@@ -151,7 +156,7 @@ dialog::backdrop{background:#0008}
     </div>
   </section>
 
-  <!-- SECTION INFOS (AJOUTÉE CONFORMÉMENT À L'IMAGE) -->
+  <!-- SECTION INFOS -->
   <section id="infos">
     <div class="info-card">
       <h3>Service client</h3>
@@ -244,7 +249,7 @@ const LIENS = {
 const DEVISE = "FCFA";
 const MIN = 500;
 
-/* Photos de secours : utilisées seulement si la colonne Photo du Sheet n'a pas de photo. */
+/* Photos de secours */
 const PHOTO_BASE = "https://lh3.googleusercontent.com/d/";
 const PHOTOS_KITS = [
   "1GsK8C5OTg17p3U_-2EFlvXrkFVRGLmVr",
@@ -482,6 +487,15 @@ async function versement() {
   const r = await appel({ action: "versement", ...session, produit: cible.ID, montant: m });
   if (!r.ok) return $("derr").textContent = r.msg;
   $("dlg").close(); afficher(r); aller("epargne"); payer(m, r.ref);
+}
+
+/* ---- Enregistrement du Service Worker pour PWA ---- */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker enregistré avec succès', reg))
+      .catch(err => console.log('Erreur d enregistrement du Service Worker', err));
+  });
 }
 </script>
 </body>
